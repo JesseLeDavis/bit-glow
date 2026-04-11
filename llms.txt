@@ -1,0 +1,24 @@
+# BitGlow
+
+> BitGlow is a web and mobile development studio based in Salem, Oregon. We build custom web applications, Flutter mobile apps, and business software for founders and small businesses. You talk directly to the developer — no account managers, no agencies.
+
+## Services
+
+- **Web Development**: Full-stack web applications built with React, Next.js, PHP, and Node.js. Includes API development, e-commerce platforms, and progressive web apps.
+- **Mobile Development**: Cross-platform iOS and Android apps built with Flutter and Firebase. Includes app store deployment and ongoing maintenance.
+- **Custom Solutions**: Business automation tools, online ordering systems, booking and scheduling platforms, customer portals, and custom POS integrations.
+
+## Recent Work
+
+- [Caneeli Designs](https://caneelidesigns.com): E-commerce site for a handcrafted goods artist with a custom admin panel for inventory, listings, and payments. Built with PHP, JavaScript, and Stripe.
+- Belay Buddy: Mobile app for climbers to find and schedule belay partners with profiles, availability, and location matching. Built with Flutter and Firebase.
+- Dreamward: Journaling and tracking app for logging dreams and out-of-body experiences. Built with Flutter and Firebase.
+
+## Contact
+
+- Email: hello@bitglow.tech
+- Location: Salem, Oregon (serving clients locally and remotely across the US)
+- Website: https://bitglow.tech
+- GitHub: https://github.com/JesseLeDavis
+- LinkedIn: https://linkedin.com/company/bitglow
+- Currently accepting new projects

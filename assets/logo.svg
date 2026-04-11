@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 245 269">
+  <defs>
+    <style>
+      .cls-1 {
+        filter: url(#outer-glow-3);
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        opacity: .6;
+      }
+
+      .cls-1, .cls-4 {
+        fill: #ffdc1f;
+      }
+
+      .cls-2 {
+        filter: url(#outer-glow-1);
+      }
+
+      .cls-2, .cls-5 {
+        fill: #ff9d15;
+      }
+
+      .cls-6, .cls-3 {
+        fill: #ffcb00;
+      }
+
+      .cls-3 {
+        filter: url(#outer-glow-2);
+      }
+
+      .cls-7 {
+        fill: #fff;
+      }
+    </style>
+    <filter id="outer-glow-1" x="0" y="45" width="168" height="224" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur" stdDeviation="15"/>
+      <feFlood flood-color="#ffce00" flood-opacity=".91"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-2" x="77" y="45" width="168" height="224" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-2" stdDeviation="15"/>
+      <feFlood flood-color="#ffce00" flood-opacity=".91"/>
+      <feComposite in2="blur-2" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="outer-glow-3" x="0" y="0" width="245" height="144" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur-3" stdDeviation="15"/>
+      <feFlood flood-color="#ffce00" flood-opacity=".91"/>
+      <feComposite in2="blur-3" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <polygon class="cls-7" points="199.95 179.17 199.95 90.02 122.74 45.44 45.52 90.02 45.52 179.17 122.74 223.75 199.95 179.17"/>
+      <polygon class="cls-2" points="122.74 207.36 122.74 223.75 45.52 179.17 45.52 90.02 59.72 98.21 59.72 170.98 122.74 207.36"/>
+      <polygon class="cls-3" points="199.95 90.02 199.95 179.17 122.74 223.75 122.74 207.36 185.76 170.98 185.76 98.21 199.95 90.02"/>
+      <polygon class="cls-1" points="199.95 90.02 185.76 98.21 122.74 61.83 59.72 98.21 45.52 90.02 122.74 45.44 199.95 90.02"/>
+      <polygon class="cls-4" points="185.76 98.21 122.74 134.59 59.72 98.21 122.74 61.83 185.76 98.21"/>
+      <polygon class="cls-5" points="122.74 134.59 122.74 207.36 59.72 170.98 59.72 98.21 122.74 134.59"/>
+      <polygon class="cls-6" points="185.76 98.21 185.76 170.98 122.74 207.36 122.74 134.59 185.76 98.21"/>
+    </g>
+  </g>
+</svg>

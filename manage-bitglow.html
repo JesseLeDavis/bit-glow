@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>BitGlow Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <!-- Login View -->
+    <div id="login-view" class="admin-login">
+        <div class="login-box">
+            <div class="login-header">
+                <span class="login-logo">BITGLOW</span>
+                <span class="login-sub">ADMIN PANEL</span>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-password"><span class="prompt-mini">$</span> Password</label>
+                    <input type="password" id="login-password" name="password" required placeholder="Enter admin password" autofocus>
+                </div>
+                <button type="submit" class="btn-primary" id="login-btn">
+                    <span class="btn-text">AUTHENTICATE</span>
+                    <span class="btn-loader" style="display: none;">Verifying...</span>
+                </button>
+                <div class="login-error" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="dashboard-view" class="admin-dashboard" style="display: none;">
+        <header class="admin-header">
+            <div class="admin-header-left">
+                <span class="admin-title">BITGLOW ADMIN</span>
+                <span class="admin-prompt">root@bitglow:~/admin$</span>
+            </div>
+            <button class="btn-logout" id="logout-btn">LOGOUT</button>
+        </header>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-pending">—</div>
+                <div class="stat-label">Pending Bookings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-week">—</div>
+                <div class="stat-label">This Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-unread">—</div>
+                <div class="stat-label">Unread Messages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value stat-value-sm" id="stat-next">—</div>
+                <div class="stat-label">Next Booking</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="bookings">Bookings</button>
+            <button class="tab-btn" data-tab="messages">Messages</button>
+            <button class="tab-btn" data-tab="availability">Availability</button>
+        </div>
+
+        <!-- Bookings Tab -->
+        <div class="tab-content" id="tab-bookings">
+            <div class="tab-toolbar">
+                <div class="filter-bar" id="booking-filters">
+                    <button class="filter-btn active" data-status="">All</button>
+                    <button class="filter-btn" data-status="pending">Pending</button>
+                    <button class="filter-btn" data-status="approved">Approved</button>
+                    <button class="filter-btn" data-status="completed">Completed</button>
+                    <button class="filter-btn" data-status="declined">Declined</button>
+                </div>
+            </div>
+            <div id="bookings-list" class="items-list"></div>
+            <div id="bookings-pagination" class="pagination"></div>
+        </div>
+
+        <!-- Messages Tab -->
+        <div class="tab-content" id="tab-messages" style="display: none;">
+            <div class="tab-toolbar">
+                <div class="filter-bar" id="message-filters">
+                    <button class="filter-btn active" data-status="">All</button>
+                    <button class="filter-btn" data-status="new">New</button>
+                    <button class="filter-btn" data-status="read">Read</button>
+                    <button class="filter-btn" data-status="archived">Archived</button>
+                </div>
+            </div>
+            <div id="messages-list" class="items-list"></div>
+            <div id="messages-pagination" class="pagination"></div>
+        </div>
+
+        <!-- Availability Tab -->
+        <div class="tab-content" id="tab-availability" style="display: none;">
+            <div class="avail-section">
+                <h3 class="avail-heading">&gt; Default Schedule</h3>
+                <p class="avail-info">Monday – Friday, 9:00 AM – 5:00 PM (Pacific Time), 30-minute slots.</p>
+            </div>
+            <div class="avail-section">
+                <h3 class="avail-heading">&gt; Add Override</h3>
+                <form id="override-form" class="override-form">
+                    <div class="override-row">
+                        <div class="form-group">
+                            <label for="override-date"><span class="prompt-mini">$</span> Date</label>
+                            <input type="date" id="override-date" name="date">
+                        </div>
+                        <div class="form-group">
+                            <label><span class="prompt-mini">$</span> Block type</label>
+                            <select id="override-type" name="type">
+                                <option value="full-day">Block entire day</option>
+                                <option value="time-range">Block time range</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="override-row override-time-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="override-start"><span class="prompt-mini">$</span> Start</label>
+                            <input type="time" id="override-start" name="start_time" value="09:00">
+                        </div>
+                        <div class="form-group">
+                            <label for="override-end"><span class="prompt-mini">$</span> End</label>
+                            <input type="time" id="override-end" name="end_time" value="17:00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="override-reason"><span class="prompt-mini">$</span> Reason (optional)</label>
+                        <input type="text" id="override-reason" name="reason" placeholder="e.g. Holiday, doctor appointment">
+                    </div>
+                    <button type="submit" class="btn-primary btn-sm">Block Time</button>
+                </form>
+            </div>
+            <div class="avail-section">
+                <h3 class="avail-heading">&gt; Current Overrides</h3>
+                <div id="overrides-list" class="items-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
