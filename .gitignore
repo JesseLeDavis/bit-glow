@@ -13,6 +13,9 @@ api/data/*.db
 api/data/*.db-wal
 api/data/*.db-shm
 
+# PHP config (contains password hash + JWT secret on server)
+api/config.php
+
 # PHP logs
 api/php_errors.log
 php_errors.log
