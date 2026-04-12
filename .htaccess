@@ -12,9 +12,6 @@
     RewriteRule ^api/data/ - [F,L]
 </IfModule>
 
-# Block access to backend/ (Node.js files — not used on Hostinger)
-RedirectMatch 403 ^/backend/
-
 # Block access to .claude/
 RedirectMatch 403 ^/\.claude/
 

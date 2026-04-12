@@ -310,7 +310,10 @@ const SCHEDULE_API = '/api/schedule.php'; // PHP backend on Hostinger
 
     // ── Open / Close ──
 
+    let previouslyFocused = null;
+
     function openModal() {
+        previouslyFocused = document.activeElement;
         modal.style.display = 'flex';
         requestAnimationFrame(() => {
             requestAnimationFrame(() => modal.classList.add('visible'));
@@ -320,6 +323,7 @@ const SCHEDULE_API = '/api/schedule.php'; // PHP backend on Hostinger
         currentYear = now.getFullYear();
         showStep(1);
         loadMonth();
+        closeBtn.focus();
     }
 
     function closeModal() {
@@ -328,7 +332,24 @@ const SCHEDULE_API = '/api/schedule.php'; // PHP backend on Hostinger
             modal.style.display = 'none';
             resetModal();
         }, 300);
+        if (previouslyFocused) previouslyFocused.focus();
     }
+
+    // Focus trap — keep Tab cycling within the modal
+    modal.addEventListener('keydown', (e) => {
+        if (e.key !== 'Tab') return;
+        const focusable = modal.querySelectorAll('button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])');
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
+    });
 
     function resetModal() {
         selectedDate = null;
@@ -351,7 +372,12 @@ const SCHEDULE_API = '/api/schedule.php'; // PHP backend on Hostinger
         step1.style.display = n === 1 ? 'block' : 'none';
         step2.style.display = n === 2 ? 'block' : 'none';
         step3.style.display = n === 3 ? 'block' : 'none';
-        dots.forEach(d => d.classList.toggle('active', Number(d.dataset.step) === n));
+        dots.forEach(d => {
+            const isActive = Number(d.dataset.step) === n;
+            d.classList.toggle('active', isActive);
+            if (isActive) d.setAttribute('aria-current', 'step');
+            else d.removeAttribute('aria-current');
+        });
     }
 
     backToCalBtn.addEventListener('click', () => showStep(1));
