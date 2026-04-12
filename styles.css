@@ -510,6 +510,11 @@ body {
     margin-bottom: 0.5rem;
 }
 
+.skill-category h2::before {
+    content: "> ";
+    color: var(--orange);
+}
+
 .service-desc {
     color: var(--text-secondary);
     font-size: var(--text-sm);
