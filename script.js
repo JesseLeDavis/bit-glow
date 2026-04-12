@@ -7,6 +7,67 @@
 const isMobile = window.innerWidth < 768;
 
 // ============================================================================
+// Interactive Dot Grid Background
+// ============================================================================
+
+(function initDotGrid() {
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
+    document.body.prepend(canvas);
+    const ctx = canvas.getContext('2d');
+
+    const spacing = 32;
+    const baseRadius = 1;
+    const glowRadius = 150;       // how close the mouse needs to be
+    const baseColor = [255, 107, 53];
+    const baseAlpha = 0.1;
+    const glowAlpha = 0.35;
+
+    let mouseX = -9999;
+    let mouseY = -9999;
+    let cols, rows;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        cols = Math.ceil(canvas.width / spacing) + 1;
+        rows = Math.ceil(canvas.height / spacing) + 1;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    document.addEventListener('mousemove', function (e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    document.addEventListener('mouseleave', function () {
+        mouseX = -9999;
+        mouseY = -9999;
+    });
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                const x = c * spacing + 1;
+                const y = r * spacing + 1;
+                const dist = Math.hypot(mouseX - x, mouseY - y);
+                const t = Math.max(0, 1 - dist / glowRadius);
+                const alpha = baseAlpha + (glowAlpha - baseAlpha) * t;
+                const radius = baseRadius + t * 0.5;
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${baseColor[0]},${baseColor[1]},${baseColor[2]},${alpha})`;
+                ctx.fill();
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+
+// ============================================================================
 // Logo
 // ============================================================================
 

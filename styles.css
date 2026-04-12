@@ -66,13 +66,7 @@ body {
     line-height: 1.65;
     color: var(--text-primary);
     background-color: var(--bg-base);
-    background-image: radial-gradient(
-        circle at 1px 1px,
-        rgba(255, 107, 53, 0.1) 1px,
-        transparent 0
-    );
-    background-size: 32px 32px;
-    background-attachment: fixed;
+    /* Dot grid now rendered via canvas for interactive glow */
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -160,14 +154,8 @@ body {
     width: 68px;
     height: 68px;
     perspective: 260px;
-    cursor: pointer;
-    filter: drop-shadow(0 0 12px rgba(255, 206, 0, 0.35));
-    transition: filter 0.3s ease;
+    filter: drop-shadow(0 0 18px rgba(255, 206, 0, 0.55)) drop-shadow(0 0 40px rgba(255, 157, 21, 0.3));
     margin: 0.75rem auto;
-}
-
-.cube-scene:hover {
-    filter: drop-shadow(0 0 22px rgba(255, 206, 0, 0.65));
 }
 
 .cube {
@@ -186,33 +174,38 @@ body {
 
 .cube-face {
     position: absolute;
-    width: 68px;
-    height: 68px;
-    border: 1px solid rgba(255, 206, 0, 0.25);
-    opacity: 0.92;
+    box-sizing: border-box;
 }
 
-/* Face positions */
-.cube-top    { transform: rotateX(90deg)  translateZ(34px); background: #ffdc1f; }
-.cube-bottom { transform: rotateX(-90deg) translateZ(34px); background: #cc9900; }
-.cube-front  { transform: translateZ(34px);                  background: #ff9d15; }
-.cube-back   { transform: rotateY(180deg) translateZ(34px);  background: #cc6600; }
-.cube-right  { transform: rotateY(90deg)  translateZ(34px);  background: #ffcb00; }
-.cube-left   { transform: rotateY(-90deg) translateZ(34px);  background: #e8a800; }
-
-/* Glow on the visible faces */
-.cube-top   { box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2); }
-.cube-front { box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.25); }
-.cube-right { box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.15); }
-
-/* Pause spin on hover, let user admire it */
-.cube-scene:hover .cube {
-    animation-play-state: paused;
+/* Outer white cube — slightly larger, very subtle */
+.outer-face {
+    width: 56px;
+    height: 56px;
+    top: 6px;
+    left: 6px;
+    background: rgba(255, 255, 255, 0.12);
 }
+.outer-face.cube-top    { transform: rotateX(90deg)  translateZ(28px); }
+.outer-face.cube-bottom { transform: rotateX(-90deg) translateZ(28px); }
+.outer-face.cube-front  { transform: translateZ(28px); }
+.outer-face.cube-back   { transform: rotateY(180deg) translateZ(28px); }
+.outer-face.cube-right  { transform: rotateY(90deg)  translateZ(28px); }
+.outer-face.cube-left   { transform: rotateY(-90deg) translateZ(28px); }
 
-.cube-scene:active .cube {
-    animation-play-state: running;
+/* Inner orange/yellow cube — centered inside */
+.inner-face {
+    width: 48px;
+    height: 48px;
+    top: 10px;
+    left: 10px;
 }
+.inner-face.cube-top    { transform: rotateX(90deg)  translateZ(24px); background: #ffdc1f; box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.2), 0 0 12px rgba(255, 220, 31, 0.5); }
+.inner-face.cube-bottom { transform: rotateX(-90deg) translateZ(24px); background: #cc9900; box-shadow: 0 0 10px rgba(204, 153, 0, 0.4); }
+.inner-face.cube-front  { transform: translateZ(24px);                  background: #ff9d15; box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.1), 0 0 12px rgba(255, 157, 21, 0.5); }
+.inner-face.cube-back   { transform: rotateY(180deg) translateZ(24px);  background: #cc6600; box-shadow: 0 0 10px rgba(204, 102, 0, 0.4); }
+.inner-face.cube-right  { transform: rotateY(90deg)  translateZ(24px);  background: #ffcb00; box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.05), 0 0 12px rgba(255, 203, 0, 0.5); }
+.inner-face.cube-left   { transform: rotateY(-90deg) translateZ(24px);  background: #e8a800; box-shadow: 0 0 10px rgba(232, 168, 0, 0.4); }
+
 
 .logo-text {
     font-size: var(--text-3xl);
