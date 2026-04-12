@@ -987,16 +987,6 @@ body {
     }
 }
 
-    .schedule-container {
-        width: 95vw;
-        max-height: 90vh;
-    }
-
-    .schedule-slots {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* ============================================================================
    Scheduling Modal
    ============================================================================ */
@@ -1296,5 +1286,14 @@ body {
     .nav-menu {
         gap: 0.75rem;
         flex-wrap: wrap;
+    }
+
+    .schedule-container {
+        width: 95vw;
+        max-height: 90vh;
+    }
+
+    .schedule-slots {
+        grid-template-columns: 1fr;
     }
 }
