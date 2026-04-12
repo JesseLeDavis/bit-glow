@@ -1,6 +1,6 @@
 // BitGlow Admin Panel
 // Change this to your backend URL in production
-const API_BASE = '/api';
+const API_BASE = '/api/admin.php';
 
 // ============================================================================
 // Auth
@@ -12,12 +12,14 @@ function getToken() { return localStorage.getItem(TOKEN_KEY); }
 function setToken(t) { localStorage.setItem(TOKEN_KEY, t); }
 function clearToken() { localStorage.removeItem(TOKEN_KEY); }
 
-async function apiFetch(path, opts = {}) {
+async function apiFetch(action, opts = {}) {
     const token = getToken();
     const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const resp = await fetch(`${API_BASE}${path}`, { ...opts, headers });
+    // Build URL: action can be "bookings?status=pending" or just "login"
+    const url = `${API_BASE}?action=${action}`;
+    const resp = await fetch(url, { ...opts, headers });
     if (resp.status === 401) {
         clearToken();
         showLogin();
@@ -61,7 +63,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     try {
         const password = document.getElementById('login-password').value;
-        const resp = await fetch(`${API_BASE}/admin/login`, {
+        const resp = await fetch(`${API_BASE}?action=login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password })
@@ -96,7 +98,7 @@ document.getElementById('logout-btn').addEventListener('click', () => {
 
 async function loadStats() {
     try {
-        const data = await apiFetch('/admin/stats');
+        const data = await apiFetch('stats');
         document.getElementById('stat-pending').textContent = data.pendingBookings;
         document.getElementById('stat-week').textContent = data.weekBookings;
         document.getElementById('stat-unread').textContent = data.unreadContacts;
@@ -171,7 +173,7 @@ async function loadBookings() {
         const params = new URLSearchParams({ page: bookingPage, limit: 15 });
         if (bookingFilter) params.set('status', bookingFilter);
 
-        const data = await apiFetch(`/admin/bookings?${params}`);
+        const data = await apiFetch(`bookings&${params}`);
 
         if (data.bookings.length === 0) {
             list.innerHTML = '<div class="empty-state">No bookings found.</div>';
@@ -213,7 +215,7 @@ async function loadBookings() {
 }
 
 async function updateBooking(id, status) {
-    await apiFetch(`/admin/bookings/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+    await apiFetch('update-booking', { method: 'POST', body: JSON.stringify({ id, status }) });
     loadBookings();
     loadStats();
 }
@@ -221,12 +223,12 @@ async function updateBooking(id, status) {
 async function saveBookingNotes(id) {
     const textarea = document.querySelector(`textarea[data-booking-notes="${id}"]`);
     if (!textarea) return;
-    await apiFetch(`/admin/bookings/${id}`, { method: 'PATCH', body: JSON.stringify({ notes: textarea.value }) });
+    await apiFetch('update-booking', { method: 'POST', body: JSON.stringify({ id, notes: textarea.value }) });
 }
 
 async function deleteBooking(id) {
     if (!confirm('Delete this booking?')) return;
-    await apiFetch(`/admin/bookings/${id}`, { method: 'DELETE' });
+    await apiFetch('delete-booking', { method: 'POST', body: JSON.stringify({ id }) });
     loadBookings();
     loadStats();
 }
@@ -254,7 +256,7 @@ async function loadMessages() {
         const params = new URLSearchParams({ page: messagePage, limit: 15 });
         if (messageFilter) params.set('status', messageFilter);
 
-        const data = await apiFetch(`/admin/contacts?${params}`);
+        const data = await apiFetch(`contacts&${params}`);
 
         if (data.contacts.length === 0) {
             list.innerHTML = '<div class="empty-state">No messages found.</div>';
@@ -288,14 +290,14 @@ async function loadMessages() {
 }
 
 async function updateContact(id, status) {
-    await apiFetch(`/admin/contacts/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+    await apiFetch('update-contact', { method: 'POST', body: JSON.stringify({ id, status }) });
     loadMessages();
     loadStats();
 }
 
 async function deleteContact(id) {
     if (!confirm('Delete this message?')) return;
-    await apiFetch(`/admin/contacts/${id}`, { method: 'DELETE' });
+    await apiFetch('delete-contact', { method: 'POST', body: JSON.stringify({ id }) });
     loadMessages();
     loadStats();
 }
@@ -324,7 +326,7 @@ overrideForm.addEventListener('submit', async (e) => {
         body.end_time = document.getElementById('override-end').value;
     }
 
-    await apiFetch('/admin/availability', { method: 'POST', body: JSON.stringify(body) });
+    await apiFetch('add-override', { method: 'POST', body: JSON.stringify(body) });
     overrideForm.reset();
     overrideType.value = 'full-day';
     timeFields.style.display = 'none';
@@ -334,7 +336,7 @@ overrideForm.addEventListener('submit', async (e) => {
 async function loadAvailability() {
     const list = document.getElementById('overrides-list');
     try {
-        const data = await apiFetch('/admin/availability');
+        const data = await apiFetch('availability');
 
         if (data.overrides.length === 0) {
             list.innerHTML = '<div class="empty-state">No overrides set. Default schedule is active.</div>';
@@ -362,7 +364,7 @@ async function loadAvailability() {
 }
 
 async function deleteOverride(id) {
-    await apiFetch(`/admin/availability/${id}`, { method: 'DELETE' });
+    await apiFetch('delete-override', { method: 'POST', body: JSON.stringify({ id }) });
     loadAvailability();
 }
 
@@ -399,7 +401,7 @@ function renderPagination(container, total, page, limit, onPage) {
     if (!token) { showLogin(); return; }
 
     try {
-        const resp = await fetch(`${API_BASE}/admin/verify`, {
+        const resp = await fetch(`${API_BASE}?action=verify`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
         });

@@ -1,0 +1,40 @@
+# BitGlow — Hostinger Apache config
+
+# Protect sensitive files
+<FilesMatch "(\.env|\.gitignore|CLAUDE\.md|\.log)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Protect api data directory (SQLite DB)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^api/data/ - [F,L]
+</IfModule>
+
+# Block access to backend/ (Node.js files — not used on Hostinger)
+RedirectMatch 403 ^/backend/
+
+# Block access to .claude/
+RedirectMatch 403 ^/\.claude/
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Cache static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+</IfModule>
+
+# Compress text-based responses
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>

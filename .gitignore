@@ -9,6 +9,13 @@ backend/.env
 backend/data/*.db
 backend/data/*.db-wal
 backend/data/*.db-shm
+api/data/*.db
+api/data/*.db-wal
+api/data/*.db-shm
+
+# PHP logs
+api/php_errors.log
+php_errors.log
 
 # OS files
 .DS_Store

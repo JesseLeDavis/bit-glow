@@ -217,7 +217,7 @@ if (contactForm) {
 // Scheduling Modal
 // ============================================================================
 
-const SCHEDULE_API = '/api/schedule'; // Change to full URL in production if backend is separate
+const SCHEDULE_API = '/api/schedule.php'; // PHP backend on Hostinger
 
 (function initScheduleModal() {
     const trigger = document.getElementById('schedule-trigger');
@@ -303,7 +303,7 @@ const SCHEDULE_API = '/api/schedule'; // Change to full URL in production if bac
         calMonthYear.textContent = new Date(currentYear, currentMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
         try {
-            const resp = await fetch(`${SCHEDULE_API}/available-dates?month=${monthStr}`);
+            const resp = await fetch(`${SCHEDULE_API}?action=available-dates&month=${monthStr}`);
             const data = await resp.json();
             availableDates = data.dates || [];
         } catch {
@@ -371,7 +371,7 @@ const SCHEDULE_API = '/api/schedule'; // Change to full URL in production if bac
         slotsContainer.innerHTML = '<div class="schedule-slots-loading">Loading available times...</div>';
 
         try {
-            const resp = await fetch(`${SCHEDULE_API}/slots/${dateStr}`);
+            const resp = await fetch(`${SCHEDULE_API}?action=slots&date=${dateStr}`);
             const data = await resp.json();
             renderSlots(data.slots || []);
         } catch {
@@ -433,7 +433,7 @@ const SCHEDULE_API = '/api/schedule'; // Change to full URL in production if bac
         const formData = new FormData(schedForm);
 
         try {
-            const resp = await fetch(`${SCHEDULE_API}/book`, {
+            const resp = await fetch(`${SCHEDULE_API}?action=book`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

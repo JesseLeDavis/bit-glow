@@ -93,6 +93,16 @@ if (!$ownerEmailSent) {
     error_log("Email sent successfully to " . CONTACT_EMAIL . " from $email");
 }
 
+// Save to database
+try {
+    require_once __DIR__ . '/api/db.php';
+    $db = getDB();
+    $stmt = $db->prepare("INSERT INTO contacts (name, email, subject, message, ip_address) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$name, $email, $subject, $message, $_SERVER['REMOTE_ADDR'] ?? '']);
+} catch (Exception $e) {
+    error_log("DB save failed: " . $e->getMessage());
+}
+
 // Send auto-reply to user (optional)
 if (SEND_AUTO_REPLY) {
     sendAutoReply($name, $email, $subject, $message);
