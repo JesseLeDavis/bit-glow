@@ -4,9 +4,12 @@
 
 ## Services
 
-- **Small-business websites** (from $1,500): Custom, mobile-friendly sites for trades, restaurants and local service businesses, with local SEO and Google setup. Typically live in 2–3 weeks.
-- **Online stores** (from $3,000): E-commerce with Stripe payments and an admin panel so owners manage products and orders themselves.
-- **Booking systems, apps and custom tools** (from $5,000): Online scheduling, customer portals, internal tools and Flutter mobile apps for iOS and Android.
+- **Starter** ($900–1,200): 1–3 page mobile-friendly site with a contact or booking button, Google Business Profile cleanup and basic SEO. Good for restaurants, cafés and simple service businesses.
+- **Standard** ($1,800–2,500): Up to 5 pages with a quote form, project gallery, Google reviews on the site, local SEO and Search Console setup. The most popular package.
+- **Growth** ($3,500–5,000): 8–12 pages with a page per service and per area served, copywriting included and stronger local SEO.
+- **Fix-up** ($400–900): Improvements to an existing site: listing mismatches, security, homepage rework and Google profile cleanup.
+- **Online stores, booking systems and apps**: Custom quote.
+- All projects are flat-priced, with 50% due to start and 50% before launch.
 
 ## Care Plans
 
