@@ -1,18 +1,25 @@
 # BitGlow
 
-> BitGlow is a web and mobile development studio based in Salem, Oregon. We build custom web applications, Flutter mobile apps, and business software for founders and small businesses. You talk directly to the developer — no account managers, no agencies.
+> BitGlow is a web design studio in Salem, Oregon, run by developer Jesse Le Davis. It builds custom websites, online stores and booking tools for small businesses, and offers monthly care plans for hosting, updates and local SEO. Clients work directly with the developer.
 
 ## Services
 
-- **Web Development**: Full-stack web applications built with React, Next.js, PHP, and Node.js. Includes API development, e-commerce platforms, and progressive web apps.
-- **Mobile Development**: Cross-platform iOS and Android apps built with Flutter and Firebase. Includes app store deployment and ongoing maintenance.
-- **Custom Solutions**: Business automation tools, online ordering systems, booking and scheduling platforms, customer portals, and custom POS integrations.
+- **Small-business websites** (from $1,500): Custom, mobile-friendly sites for trades, restaurants and local service businesses, with local SEO and Google setup. Typically live in 2–3 weeks.
+- **Online stores** (from $3,000): E-commerce with Stripe payments and an admin panel so owners manage products and orders themselves.
+- **Booking systems, apps and custom tools** (from $5,000): Online scheduling, customer portals, internal tools and Flutter mobile apps for iOS and Android.
+
+## Care Plans
+
+- **Essentials** ($59/mo): Hosting, SSL, updates, daily backups, uptime monitoring, 30 minutes of edits per month.
+- **Growth** ($119/mo): Everything in Essentials plus a monthly report, Google Business Profile check-up, 1.5 hours of edits and next-business-day response.
+- **Local SEO Plus** ($249/mo): Everything in Growth plus monthly local SEO content, ranking tracking, 3 hours of edits and same-day urgent response.
+- **Maintain Only** ($49/mo): For sites on the client's own host.
+- Pay yearly for 2 months free. Month to month after the first 3 months. Clients own their site and domain and get a free full backup if they leave.
 
 ## Recent Work
 
 - [Caneeli Designs](https://caneelidesigns.com): E-commerce site for a handcrafted goods artist with a custom admin panel for inventory, listings, and payments. Built with PHP, JavaScript, and Stripe.
-- Belay Buddy: Mobile app for climbers to find and schedule belay partners with profiles, availability, and location matching. Built with Flutter and Firebase.
-- Dreamward: Journaling and tracking app for logging dreams and out-of-body experiences. Built with Flutter and Firebase.
+- [Darren C Davis](https://darrencdavis.com): Speaker website for an author, former Fortune 100 executive, and nonprofit founder, with a keynote booking request form. Built with PHP and JavaScript.
 
 ## Contact
 
@@ -20,5 +27,4 @@
 - Location: Salem, Oregon (serving clients locally and remotely across the US)
 - Website: https://bitglow.tech
 - GitHub: https://github.com/JesseLeDavis
-- LinkedIn: https://linkedin.com/company/bitglow
 - Currently accepting new projects

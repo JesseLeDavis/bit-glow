@@ -11,17 +11,19 @@ const isMobile = window.innerWidth < 768;
 // ============================================================================
 
 (function initDotGrid() {
+    if (isMobile || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const canvas = document.createElement('canvas');
     canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
     document.body.prepend(canvas);
     const ctx = canvas.getContext('2d');
 
-    const spacing = 32;
+    const spacing = 28;
     const baseRadius = 1;
     const glowRadius = 150;       // how close the mouse needs to be
     const baseColor = [255, 107, 53];
-    const baseAlpha = 0.1;
-    const glowAlpha = 0.35;
+    const baseAlpha = 0.05;
+    const glowAlpha = 0.3;
 
     let mouseX = -9999;
     let mouseY = -9999;
@@ -68,82 +70,14 @@ const isMobile = window.innerWidth < 768;
 })();
 
 // ============================================================================
-// Logo
-// ============================================================================
-
-const logo = document.getElementById('main-logo');
-
-if (logo) {
-    logo.addEventListener('click', function () {
-        const cube = this.querySelector('.cube');
-        if (!cube) return;
-        // Kick the spin speed up briefly on click
-        cube.style.animationDuration = '1.5s';
-        setTimeout(() => { cube.style.animationDuration = '12s'; }, 1500);
-    });
-}
-
-// ============================================================================
-// Typing Animation (desktop only — static tagline on mobile)
-// ============================================================================
-
-const typingEl = document.getElementById('header-typing');
-
-if (typingEl) {
-    if (isMobile) {
-        // Static on mobile — no animation delay, no content jump
-        typingEl.textContent = '> web apps. mobile apps. real solutions.';
-    } else {
-        const messages = [
-            '> Initializing BitGlow...',
-            '> web apps. mobile apps. real solutions.',
-            '> Based in Salem, OR — building remotely.',
-            '> Ready to start your project? Scroll down.'
-        ];
-
-        let msgIndex = 0;
-        let charIndex = 0;
-        let deleting = false;
-        let speed = 80;
-
-        function typeWriter() {
-            const current = messages[msgIndex];
-
-            if (!deleting) {
-                typingEl.textContent = current.substring(0, charIndex);
-                charIndex++;
-                if (charIndex > current.length) {
-                    deleting = true;
-                    speed = 2500;
-                } else {
-                    speed = 80;
-                }
-            } else {
-                typingEl.textContent = current.substring(0, charIndex);
-                charIndex--;
-                if (charIndex === 0) {
-                    deleting = false;
-                    msgIndex = (msgIndex + 1) % messages.length;
-                    speed = 400;
-                } else {
-                    speed = 40;
-                }
-            }
-
-            setTimeout(typeWriter, speed);
-        }
-
-        setTimeout(typeWriter, 800);
-    }
-}
-
-// ============================================================================
 // Smooth Scrolling
 // ============================================================================
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        if (href === '#' || this.hasAttribute('data-schedule')) return;
+        const target = document.querySelector(href);
         if (target) {
             e.preventDefault();
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -155,7 +89,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Section Scroll-in + Active Nav
 // ============================================================================
 
-const sections = document.querySelectorAll('.terminal-section');
+const sections = document.querySelectorAll('main section[id]');
 const navLinks = document.querySelectorAll('.nav-menu a');
 
 // Track which sections are currently visible
@@ -281,9 +215,9 @@ if (contactForm) {
 const SCHEDULE_API = '/api/schedule.php'; // PHP backend on Hostinger
 
 (function initScheduleModal() {
-    const trigger = document.getElementById('schedule-trigger');
+    const triggers = document.querySelectorAll('[data-schedule]');
     const modal = document.getElementById('schedule-modal');
-    if (!trigger || !modal) return;
+    if (!triggers.length || !modal) return;
 
     const backdrop = modal.querySelector('.schedule-backdrop');
     const closeBtn = modal.querySelector('.schedule-close');
@@ -356,10 +290,11 @@ const SCHEDULE_API = '/api/schedule.php'; // PHP backend on Hostinger
         selectedSlot = null;
         showStep(1);
         statusEl.style.display = 'none';
+        schedForm.style.display = '';
         schedForm.reset();
     }
 
-    trigger.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+    triggers.forEach(t => t.addEventListener('click', (e) => { e.preventDefault(); openModal(); }));
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
     document.addEventListener('keydown', (e) => {
@@ -452,7 +387,7 @@ const SCHEDULE_API = '/api/schedule.php'; // PHP backend on Hostinger
         selectedDate = dateStr;
         const dateObj = new Date(dateStr + 'T12:00:00');
         const formatted = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-        selectedDateEl.textContent = `— ${formatted}`;
+        selectedDateEl.textContent = `· ${formatted}`;
 
         showStep(2);
         slotsContainer.innerHTML = '<div class="schedule-slots-loading">Loading available times...</div>';

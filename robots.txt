@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /manage-bitglow.html
+Disallow: /admin.js
+Disallow: /admin.css
 
 Sitemap: https://bitglow.tech/sitemap.xml

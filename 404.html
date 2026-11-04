@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Page Not Found | BitGlow</title>
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="https://bitglow.tech/404.html">
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <style>
+        :root {
+            --orange: #ff6b35;
+            --teal: #00e5cc;
+            --bg-base: #080a0f;
+            --bg-surface: #0d1117;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --color-error: #f85149;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .terminal {
+            width: 100%;
+            max-width: 640px;
+            background: var(--bg-surface);
+            border: 1px solid #21262d;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.08);
+        }
+        .terminal-bar {
+            background: #161b22;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #21262d;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-r { background: #f85149; }
+        .dot-y { background: #ff9d15; }
+        .dot-g { background: #3fb950; }
+        .bar-title { margin-left: 0.75rem; color: var(--text-secondary); font-size: 0.85rem; }
+        .terminal-body { padding: 2rem 1.75rem; }
+        .prompt { color: var(--orange); }
+        .line { margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .code {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--orange);
+            margin: 0.5rem 0 0.25rem;
+            letter-spacing: 0.05em;
+        }
+        .error { color: var(--color-error); }
+        h1 { font-size: 1.25rem; font-weight: 500; margin: 1rem 0 0.75rem; color: var(--text-primary); }
+        p { color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.1rem;
+            border: 1px solid var(--orange);
+            color: var(--orange);
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .btn:hover { background: var(--orange); color: var(--bg-base); }
+        .btn-secondary { border-color: #30363d; color: var(--text-secondary); }
+        .btn-secondary:hover { background: #21262d; color: var(--text-primary); }
+        .cursor { display: inline-block; width: 9px; height: 1.1rem; background: var(--teal); vertical-align: middle; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+    <main class="terminal">
+        <div class="terminal-bar">
+            <span class="dot dot-r"></span>
+            <span class="dot dot-y"></span>
+            <span class="dot dot-g"></span>
+            <span class="bar-title">bitglow — bash</span>
+        </div>
+        <div class="terminal-body">
+            <p class="line"><span class="prompt">root@bitglow:~$</span> cd <span id="path">/requested-page</span></p>
+            <p class="line error">bash: cd: no such file or directory</p>
+            <div class="code">404</div>
+            <h1>This page went off the grid.</h1>
+            <p>The page you're looking for doesn't exist, moved, or never did. Let's get you back to something real.<span class="cursor"></span></p>
+            <div class="links">
+                <a class="btn" href="/">&gt; Back to Home</a>
+                <a class="btn btn-secondary" href="/#work">See the Work</a>
+                <a class="btn btn-secondary" href="/#contact">Contact</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Show the path the visitor actually tried to hit
+        var p = document.getElementById('path');
+        if (p && window.location.pathname && window.location.pathname !== '/404.html') {
+            p.textContent = window.location.pathname;
+        }
+    </script>
+</body>
+</html>
