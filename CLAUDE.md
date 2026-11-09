@@ -21,7 +21,7 @@ BitGlow is the marketing site for a solo web design studio in Salem, OR, aimed a
 - `config.php` — Server config with credentials (**gitignored — must be uploaded manually after each deploy**)
 - `data/bitglow.db` — SQLite database (**gitignored**)
 
-**PHP contact handlers** (`/contact.php`, `/contact-smtp.php`): Standalone contact form endpoints.
+**PHP contact handler** (`/contact.php`): Standalone contact form endpoint.
 
 ## Deployment (Hostinger)
 
