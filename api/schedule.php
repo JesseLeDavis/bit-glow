@@ -167,6 +167,8 @@ function generateTimeSlots($start, $end) {
 }
 
 function getAvailableSlots($dateStr) {
+    if ($dateStr < date('Y-m-d')) return [];
+
     $dow = (int)(new DateTime($dateStr))->format('w'); // 0=Sun, 6=Sat
     if (!in_array($dow, BUSINESS_DAYS)) return [];
 

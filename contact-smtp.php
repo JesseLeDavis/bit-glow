@@ -210,6 +210,10 @@ function sendEmailSMTP($to, $subject, $htmlBody, $replyTo = null, $replyToName =
         $response = fgets($smtp, 515);
 
         // Build email headers and body
+        // Line breaks in user-supplied values could otherwise add headers
+        $subject = preg_replace('/[\r\n\t]+/', ' ', $subject);
+        $replyToName = preg_replace('/[\r\n\t]+/', ' ', (string) $replyToName);
+
         $headers = "From: " . FROM_NAME . " <" . FROM_EMAIL . ">\r\n";
 
         if ($replyTo) {

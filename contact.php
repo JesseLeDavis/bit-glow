@@ -70,9 +70,9 @@ if (RATE_LIMIT_ENABLED && isRateLimited()) {
 }
 
 // Extract and sanitize data
-$name    = sanitize($data['name']);
-$email   = sanitize($data['email']);
-$subject = isset($data['subject']) ? sanitize($data['subject']) : 'New project inquiry';
+$name    = singleLine(sanitize($data['name']));
+$email   = singleLine(sanitize($data['email']));
+$subject = isset($data['subject']) ? singleLine(sanitize($data['subject'])) : 'New project inquiry';
 $message = sanitize($data['message']);
 
 // Send email to site owner
@@ -162,10 +162,24 @@ function validateInput($data) {
 }
 
 /**
- * Sanitize input
+ * Sanitize input. Values stay as plain text; escape them when building HTML.
  */
 function sanitize($data) {
-    return htmlspecialchars(strip_tags(trim($data)), ENT_QUOTES, 'UTF-8');
+    return strip_tags(trim($data));
+}
+
+/**
+ * Collapse line breaks so a value can't add email headers
+ */
+function singleLine($value) {
+    return trim(preg_replace('/[\r\n\t]+/', ' ', $value));
+}
+
+/**
+ * Escape a value for an HTML email
+ */
+function escHtml($value) {
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 }
 
 /**
@@ -187,8 +201,8 @@ function sendOwnerEmail($name, $email, $subject, $message) {
     // HTML version
     $htmlMessage = getOwnerEmailTemplate($name, $email, $subject, $message);
 
-    // Headers
-    $headers = getEmailHeaders($email, $name, true);
+    // Headers: send from our own domain so SPF/DMARC pass; replies go to the visitor
+    $headers = getEmailHeaders(FROM_EMAIL, SITE_NAME, true, $email);
 
     // Send
     return mail($to, $emailSubject, $htmlMessage, $headers);
@@ -227,10 +241,10 @@ function sendAutoReply($name, $email, $subject, $message) {
 /**
  * Get email headers
  */
-function getEmailHeaders($fromEmail, $fromName, $isHtml = true) {
+function getEmailHeaders($fromEmail, $fromName, $isHtml = true, $replyTo = null) {
     $headers = [];
     $headers[] = "From: " . $fromName . " <" . $fromEmail . ">";
-    $headers[] = "Reply-To: " . $fromEmail;
+    $headers[] = "Reply-To: " . ($replyTo ?: $fromEmail);
     $headers[] = "X-Mailer: PHP/" . phpversion();
 
     if ($isHtml) {
@@ -245,7 +259,10 @@ function getEmailHeaders($fromEmail, $fromName, $isHtml = true) {
  * HTML email template for owner
  */
 function getOwnerEmailTemplate($name, $email, $subject, $message) {
-    $message = nl2br(htmlspecialchars($message));
+    $name = escHtml($name);
+    $email = escHtml($email);
+    $subject = escHtml($subject);
+    $message = nl2br(escHtml($message));
 
     return <<<HTML
 <!DOCTYPE html>
@@ -299,7 +316,9 @@ HTML;
  * HTML email template for auto-reply
  */
 function getAutoReplyTemplate($name, $subject, $message) {
-    $message = nl2br(htmlspecialchars($message));
+    $name = escHtml($name);
+    $subject = escHtml($subject);
+    $message = nl2br(escHtml($message));
 
     return <<<HTML
 <!DOCTYPE html>
@@ -366,7 +385,7 @@ function isRateLimited() {
 
     // Check if IP is rate limited
     $ipSubmissions = array_filter($data, function($timestamp, $key) use ($ip) {
-        return strpos($key, $ip) === 0;
+        return strpos($key, $ip . '_') === 0;
     }, ARRAY_FILTER_USE_BOTH);
 
     if (count($ipSubmissions) >= RATE_LIMIT_MAX) {
@@ -374,7 +393,7 @@ function isRateLimited() {
     }
 
     // Add current submission
-    $data[$ip . '_' . $now] = $now;
+    $data[$ip . '_' . uniqid('', true)] = $now;
 
     // Save data
     file_put_contents($dataFile, json_encode($data));
