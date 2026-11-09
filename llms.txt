@@ -6,7 +6,7 @@
 
 - **Starter** ($900–1,200): 1–3 page mobile-friendly site with a contact or booking button, Google Business Profile cleanup and basic SEO. Good for restaurants, cafés and simple service businesses.
 - **Standard** ($1,800–2,500): Up to 5 pages with a quote form, project gallery, Google reviews on the site, local SEO and Search Console setup. The most popular package.
-- **Growth** ($3,500–5,000): 8–12 pages with a page per service and per area served, copywriting included and stronger local SEO.
+- **Premium** ($3,500–5,000): 8–12 pages with a page for each service and locally written pages for each town served, copywriting included, plus keyword research, business schema and listing cleanup across Google, Yelp and other directories.
 - **Fix-up** ($400–900): Improvements to an existing site: listing mismatches, security, homepage rework and Google profile cleanup.
 - **Online stores, booking systems and apps**: Custom quote.
 - All projects are flat-priced, with 50% due to start and 50% before launch.
