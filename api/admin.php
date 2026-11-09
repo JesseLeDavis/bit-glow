@@ -14,11 +14,14 @@
  * GET  ?action=availability
  * POST ?action=add-override   {date, start_time?, end_time?, is_blocked, reason?}
  * POST ?action=delete-override {id}
+ *
+ * Client & care plan tracker endpoints: see clients.php
  */
 
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/clients.php';
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -37,6 +40,7 @@ if ($action === 'login') { handleLogin(); exit(); }
 
 // Protected routes
 requireAdmin();
+clientsMigrate();
 
 switch ($action) {
     case 'verify':       echo json_encode(['valid' => true]); break;
@@ -50,6 +54,16 @@ switch ($action) {
     case 'availability': handleAvailability(); break;
     case 'add-override': handleAddOverride(); break;
     case 'delete-override': handleDeleteOverride(); break;
+    case 'clients':        handleClients(); break;
+    case 'client-detail':  handleClientDetail(); break;
+    case 'save-client':    handleSaveClient(); break;
+    case 'delete-client':  handleDeleteClient(); break;
+    case 'requests':       handleRequests(); break;
+    case 'save-request':   handleSaveRequest(); break;
+    case 'update-request': handleUpdateRequest(); break;
+    case 'delete-request': handleDeleteRequest(); break;
+    case 'log-time':       handleLogTime(); break;
+    case 'delete-time':    handleDeleteTime(); break;
     default:
         http_response_code(400);
         echo json_encode(['success' => false, 'error' => 'Invalid action']);

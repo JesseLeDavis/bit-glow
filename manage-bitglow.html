@@ -69,6 +69,7 @@
             <button class="tab-btn active" data-tab="bookings">Bookings</button>
             <button class="tab-btn" data-tab="messages">Messages</button>
             <button class="tab-btn" data-tab="availability">Availability</button>
+            <button class="tab-btn" data-tab="clients">Clients <span class="tab-badge" id="clients-badge" hidden></span></button>
         </div>
 
         <!-- Bookings Tab -->
@@ -144,7 +145,118 @@
                 <div id="overrides-list" class="items-list"></div>
             </div>
         </div>
+
+        <!-- Clients Tab -->
+        <div class="tab-content" id="tab-clients" style="display: none;">
+            <div class="care-stats">
+                <div class="care-stat"><div class="care-stat-value" id="cs-active">—</div><div class="stat-label">Active clients</div></div>
+                <div class="care-stat"><div class="care-stat-value" id="cs-mrr">—</div><div class="stat-label">Monthly recurring</div></div>
+                <div class="care-stat"><div class="care-stat-value" id="cs-open">—</div><div class="stat-label">Awaiting reply</div></div>
+                <div class="care-stat"><div class="care-stat-value" id="cs-overdue">—</div><div class="stat-label">Overdue</div></div>
+                <div class="care-stat"><div class="care-stat-value" id="cs-ontime">—</div><div class="stat-label">On time (30 days)</div></div>
+            </div>
+
+            <div class="avail-section">
+                <div class="section-row">
+                    <h3 class="avail-heading">&gt; Needs a reply</h3>
+                    <button class="btn-primary btn-sm" id="new-request-btn">+ Log request</button>
+                </div>
+                <div id="queue-list" class="items-list"></div>
+            </div>
+
+            <div class="avail-section">
+                <div class="section-row">
+                    <h3 class="avail-heading">&gt; Clients</h3>
+                    <div class="section-row-actions">
+                        <div class="filter-bar" id="client-filters">
+                            <button class="filter-btn active" data-status="active">Active</button>
+                            <button class="filter-btn" data-status="all">All</button>
+                        </div>
+                        <button class="btn-primary btn-sm" id="new-client-btn">+ Add client</button>
+                    </div>
+                </div>
+                <div id="clients-list" class="items-list"></div>
+            </div>
+
+            <p class="care-help">Reply deadlines: Growth &amp; Local SEO Plus next business day · Essentials, Maintain Only &amp; no plan 2 business days · Urgent / site down 4 business hours on any plan. Counted Mon–Fri 9–5 PT, skipping full days blocked in Availability.</p>
+        </div>
     </div>
+
+    <!-- Client dialog -->
+    <dialog id="client-dialog" class="admin-dialog">
+        <form id="client-form" method="dialog">
+            <h3 class="dialog-title" id="client-dialog-title">Add client</h3>
+            <input type="hidden" name="id">
+            <div class="override-row">
+                <div class="form-group"><label>Contact name *</label><input name="name" required placeholder="Jane Smith"></div>
+                <div class="form-group"><label>Business</label><input name="business" placeholder="Kelly &amp; Sons Roofing"></div>
+            </div>
+            <div class="override-row">
+                <div class="form-group"><label>Email</label><input name="email" type="email" placeholder="jane@business.com"></div>
+                <div class="form-group"><label>Phone</label><input name="phone" type="tel"></div>
+            </div>
+            <div class="form-group"><label>Website</label><input name="website" placeholder="https://"></div>
+            <div class="override-row">
+                <div class="form-group"><label>Care plan</label><select name="plan" id="client-plan-select"></select></div>
+                <div class="form-group"><label>Billing</label>
+                    <select name="billing"><option value="monthly">Monthly</option><option value="annual">Annual (2 months free)</option></select>
+                </div>
+            </div>
+            <div class="override-row">
+                <div class="form-group"><label>Plan start date</label><input name="plan_start" type="date"></div>
+                <div class="form-group"><label>Status</label>
+                    <select name="status"><option value="active">Active</option><option value="paused">Paused</option><option value="cancelled">Cancelled</option></select>
+                </div>
+            </div>
+            <div class="form-group"><label>Notes</label><textarea name="notes" rows="3" placeholder="Hosting, logins location, quirks…"></textarea></div>
+            <div class="dialog-error" hidden></div>
+            <div class="dialog-actions">
+                <button type="button" class="btn-action" data-close>Cancel</button>
+                <button type="submit" class="btn-primary btn-sm">Save client</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Request dialog -->
+    <dialog id="request-dialog" class="admin-dialog">
+        <form id="request-form" method="dialog">
+            <h3 class="dialog-title">Log a request</h3>
+            <div class="form-group"><label>Client *</label><select name="client_id" required></select></div>
+            <div class="form-group"><label>What do they need? *</label><input name="summary" required placeholder="Update holiday hours on homepage"></div>
+            <div class="form-group"><label>Received</label><input name="received_at" type="datetime-local"></div>
+            <label class="check-row"><input type="checkbox" name="urgent"> Urgent / site down (4 business hours)</label>
+            <div class="dialog-error" hidden></div>
+            <div class="dialog-actions">
+                <button type="button" class="btn-action" data-close>Cancel</button>
+                <button type="submit" class="btn-primary btn-sm">Add to queue</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Time dialog -->
+    <dialog id="time-dialog" class="admin-dialog">
+        <form id="time-form" method="dialog">
+            <h3 class="dialog-title">Log time</h3>
+            <input type="hidden" name="client_id">
+            <p class="dialog-sub" id="time-dialog-client"></p>
+            <div class="override-row">
+                <div class="form-group"><label>Date</label><input name="date" type="date" required></div>
+                <div class="form-group"><label>Minutes *</label><input name="minutes" type="number" min="1" max="1440" step="5" required placeholder="30"></div>
+            </div>
+            <div class="quick-mins">
+                <button type="button" class="btn-action" data-mins="15">15m</button>
+                <button type="button" class="btn-action" data-mins="30">30m</button>
+                <button type="button" class="btn-action" data-mins="60">1h</button>
+                <button type="button" class="btn-action" data-mins="90">1.5h</button>
+            </div>
+            <div class="form-group"><label>What did you do?</label><input name="note" placeholder="Swapped hero photo, updated menu PDF"></div>
+            <div class="dialog-error" hidden></div>
+            <div class="dialog-actions">
+                <button type="button" class="btn-action" data-close>Cancel</button>
+                <button type="submit" class="btn-primary btn-sm">Log time</button>
+            </div>
+        </form>
+    </dialog>
 
     <script src="admin.js"></script>
 </body>

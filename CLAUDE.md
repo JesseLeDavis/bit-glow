@@ -4,16 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-BitGlow is a terminal-themed portfolio/agency website for a web development studio. It consists of a static frontend and a PHP API backend, deployed on Hostinger.
+BitGlow is the marketing site for a solo web design studio in Salem, OR, aimed at local small businesses (dark theme; mono/terminal styling only as small accents). It consists of a static frontend and a PHP API backend, deployed on Hostinger.
 
 ## Architecture
 
-**Frontend** (`/` root): Static HTML/CSS/JS — no build step. `index.html` is the single-page site; `script.js` handles animations, typing effects, and contact form submission via `fetch`; `styles.css` provides the terminal aesthetic.
+**Frontend** (`/` root): Static HTML/CSS/JS — no build step. `index.html` is the single-page site; `script.js` handles the dot-grid background, scroll-in, the booking modal and contact form submission via `fetch`; `styles.css` holds the design system. Pricing on the page (build packages, care plans) must match the client contracts.
 
-**Admin Panel** (`manage-bitglow.html`, `admin.js`, `admin.css`): Protected admin interface for managing bookings and scheduling. Not indexed by search engines. Authenticates via `/api/admin.php`.
+**Admin Panel** (`manage-bitglow.html`, `admin.js`, `admin.css`): Protected admin interface for managing bookings, scheduling, and care plan clients (Clients tab). Not indexed by search engines. Authenticates via `/api/admin.php`.
 
 **PHP API** (`/api/`) — Backend, deployed on Hostinger:
 - `admin.php` — Admin panel endpoints (login, booking management)
+- `clients.php` — Client & care plan tracker (clients, support requests with business-hour reply deadlines, time logged against plan allowances). Plan prices/allowances live in `CARE_PLANS` here; tables auto-create on first admin request
 - `schedule.php` — Public scheduling/booking endpoints
 - `auth.php` — JWT authentication middleware
 - `db.php` — SQLite database layer
